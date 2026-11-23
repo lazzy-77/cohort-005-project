@@ -17,7 +17,7 @@ export function readNoteDraft(draft: string, savedBody: string): NoteDraft {
   // Saved bodies are already trimmed: the action trims before it writes.
   const unsaved = trimmed !== savedBody;
   return {
-    length: draft.length,
+    length: trimmed.length,
     limit: MAX_NOTE_LENGTH,
     tooLong,
     empty,

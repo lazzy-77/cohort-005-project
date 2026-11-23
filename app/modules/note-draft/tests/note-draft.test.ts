@@ -37,8 +37,8 @@ describe("describeNoteDraft", () => {
     expect(describeNoteDraft("  Same text\n", "Same text").unsaved).toBe(false);
   });
 
-  it("counts the characters as typed, including whitespace", () => {
-    expect(describeNoteDraft(" ab ", null).length).toBe(4);
+  it("counts the characters the action will save, without surrounding whitespace", () => {
+    expect(describeNoteDraft(" ab ", null).length).toBe(2);
   });
 
   it("allows a draft at exactly the limit", () => {
@@ -56,6 +56,6 @@ describe("describeNoteDraft", () => {
   it("does not count trailing whitespace towards the limit", () => {
     const draft = describeNoteDraft(`${"a".repeat(MAX_NOTE_LENGTH)}  `, null);
     expect(draft.tooLong).toBe(false);
-    expect(draft.length).toBe(MAX_NOTE_LENGTH + 2);
+    expect(draft.length).toBe(MAX_NOTE_LENGTH);
   });
 });
