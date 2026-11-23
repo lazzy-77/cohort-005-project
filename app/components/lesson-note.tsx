@@ -46,7 +46,7 @@ export function LessonNote({
             </Button>
             <NoteStatus
               error={error}
-              unsaved={draft.unsaved}
+              draft={draft}
               updatedAt={note?.updatedAt}
             />
             <CharacterCount draft={draft} />
@@ -93,15 +93,22 @@ function CharacterCount({ draft }: { draft: NoteDraft }) {
 
 function NoteStatus({
   error,
-  unsaved,
+  draft,
   updatedAt,
 }: {
   error: string | undefined;
-  unsaved: boolean;
+  draft: NoteDraft;
   updatedAt: string | undefined;
 }) {
   if (error) return <span className="text-sm text-destructive">{error}</span>;
-  if (unsaved) {
+  if (draft.unsaved && draft.empty) {
+    return (
+      <span className="text-xs text-muted-foreground">
+        A note cannot be empty
+      </span>
+    );
+  }
+  if (draft.unsaved) {
     return (
       <span className="text-xs text-muted-foreground">Unsaved changes</span>
     );
