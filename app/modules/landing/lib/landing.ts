@@ -10,11 +10,6 @@ import {
   users,
 } from "~/db/schema";
 
-// ─── Landing ───
-// What the public landing page shows about the catalogue: the newest
-// published courses and a few figures about what is on offer. Only
-// published courses count; drafts and archived courses are invisible here.
-
 export type Db = BetterSQLite3Database<typeof schema>;
 
 export const FEATURED_COURSE_LIMIT = 3;
