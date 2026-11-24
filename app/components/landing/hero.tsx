@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { countLabel } from "~/lib/count-label";
+import { cn } from "~/lib/utils";
+import { countLabel, countNoun } from "~/lib/count-label";
 import type {
   CatalogueStats,
   FeaturedCourse,
@@ -17,7 +18,12 @@ export function Hero({
   signedIn: boolean;
 }) {
   return (
-    <section className="mx-auto grid max-w-6xl items-center gap-16 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:py-28">
+    <section
+      className={cn(
+        "mx-auto grid max-w-6xl items-center gap-16 px-6 py-20 lg:py-28",
+        courses.length > 0 && "lg:grid-cols-[1.1fr_1fr]"
+      )}
+    >
       <div>
         <p className="text-sm font-semibold uppercase tracking-widest text-primary">
           Courses for developers
@@ -32,40 +38,68 @@ export function Hero({
           short lessons, check yourself with quizzes, and pick up where you left
           off.
         </p>
-        <div className="mt-10 flex flex-wrap items-center gap-3">
-          <Button asChild size="lg">
-            <Link to="/courses">
-              Browse Courses
-              <ArrowRight className="ml-2 size-4" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            {signedIn ? (
-              <Link to="/dashboard">Go to Dashboard</Link>
-            ) : (
-              <Link to="/signup">Create a free account</Link>
-            )}
-          </Button>
-        </div>
-        <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4 border-t border-border pt-8">
-          <Figure value={stats.courses} label="courses" />
-          <Figure value={stats.lessons} label="lessons" />
-          <Figure value={stats.instructors} label="instructors" />
-        </dl>
+        <HeroActions signedIn={signedIn} />
+        <CatalogueFigures stats={stats} />
       </div>
       <CatalogueWindow courses={courses} />
     </section>
   );
 }
 
-function Figure({ value, label }: { value: number; label: string }) {
+function HeroActions({ signedIn }: { signedIn: boolean }) {
   return (
-    <div>
-      <dt className="sr-only">{label}</dt>
-      <dd>
-        <span className="text-3xl font-bold tracking-tight">{value}</span>
-        <span className="ml-2 text-sm text-muted-foreground">{label}</span>
-      </dd>
+    <div className="mt-10 flex flex-wrap items-center gap-3">
+      <Button asChild size="lg">
+        <Link to="/courses">
+          Browse Courses
+          <ArrowRight className="ml-2 size-4" />
+        </Link>
+      </Button>
+      <Button asChild size="lg" variant="outline">
+        {signedIn ? (
+          <Link to="/dashboard">Go to Dashboard</Link>
+        ) : (
+          <Link to="/signup">Create a free account</Link>
+        )}
+      </Button>
+    </div>
+  );
+}
+
+function CatalogueFigures({ stats }: { stats: CatalogueStats }) {
+  return (
+    <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4 border-t border-border pt-8">
+      <Figure value={stats.courses} singular="course" plural="courses" />
+      <Figure value={stats.lessons} singular="lesson" plural="lessons" />
+      <Figure
+        value={stats.instructors}
+        singular="instructor"
+        plural="instructors"
+      />
+      <Figure
+        value={stats.categories}
+        singular="category"
+        plural="categories"
+      />
+    </dl>
+  );
+}
+
+function Figure({
+  value,
+  singular,
+  plural,
+}: {
+  value: number;
+  singular: string;
+  plural: string;
+}) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <dt className="order-last text-sm text-muted-foreground">
+        {countNoun(value, singular, plural)}
+      </dt>
+      <dd className="text-3xl font-bold tracking-tight">{value}</dd>
     </div>
   );
 }
@@ -74,7 +108,7 @@ function CatalogueWindow({ courses }: { courses: FeaturedCourse[] }) {
   if (courses.length === 0) return null;
 
   return (
-    <div className="relative" aria-label="New on Cadence">
+    <aside className="relative" aria-label="New on Cadence">
       <div className="absolute -inset-4 -z-10 rounded-3xl bg-primary/5" />
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
         <div className="flex items-center gap-2 border-b border-border px-5 py-3">
@@ -112,6 +146,6 @@ function CatalogueWindow({ courses }: { courses: FeaturedCourse[] }) {
           ))}
         </ul>
       </div>
-    </div>
+    </aside>
   );
 }

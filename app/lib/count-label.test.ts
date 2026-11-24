@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countLabel } from "./count-label";
+import { countLabel, countNoun } from "./count-label";
 
 describe("countLabel", () => {
   it("uses the singular for exactly one", () => {
@@ -13,5 +13,13 @@ describe("countLabel", () => {
 
   it("takes an irregular plural as given", () => {
     expect(countLabel(3, "category", "categories")).toBe("3 categories");
+  });
+});
+
+describe("countNoun", () => {
+  it("gives the singular for exactly one and the plural otherwise", () => {
+    expect(countNoun(1, "course", "courses")).toBe("course");
+    expect(countNoun(0, "course", "courses")).toBe("courses");
+    expect(countNoun(5, "category", "categories")).toBe("categories");
   });
 });
