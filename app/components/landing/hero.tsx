@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { countLabel } from "~/modules/landing";
+import { countLabel } from "~/lib/count-label";
 import type {
   CatalogueStats,
   FeaturedCourse,

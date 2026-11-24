@@ -8,7 +8,7 @@ import {
   CardHeader,
 } from "~/components/ui/card";
 import { CourseImage } from "~/components/course-image";
-import { countLabel } from "~/modules/landing";
+import { countLabel } from "~/lib/count-label";
 import type { FeaturedCourse } from "~/modules/landing/index.server";
 
 export function FeaturedCourses({ courses }: { courses: FeaturedCourse[] }) {

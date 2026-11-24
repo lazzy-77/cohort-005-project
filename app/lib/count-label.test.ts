@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countLabel } from "../index";
+import { countLabel } from "./count-label";
 
 describe("countLabel", () => {
   it("uses the singular for exactly one", () => {
